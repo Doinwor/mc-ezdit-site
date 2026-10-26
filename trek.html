@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СИГНАЛ — MC ЕЗДИТЬ</title>
+<meta name="description" content="СИГНАЛ — новый релиз MC ЕЗДИТЬ. Слушай треклист.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============ БАЗА ============ */
+:root{
+  --bg:#08080a;
+  --fg:#f2f2f2;
+  --muted:#8a8a92;
+  --acid:#c8ff00;
+  --line:rgba(255,255,255,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Manrope',system-ui,sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+::selection{background:var(--acid);color:#000;}
+
+/* ============ ШУМ ============ */
+.noise{
+  position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============ КУРСОР ============ */
+.cursor{
+  position:fixed;top:0;left:0;width:14px;height:14px;border-radius:50%;
+  background:var(--acid);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s ease,height .25s ease,background .25s ease;
+  box-shadow:0 0 18px rgba(200,255,0,.55);
+}
+.cursor.big{width:56px;height:56px;background:rgba(200,255,0,.9);mix-blend-mode:difference;box-shadow:none;}
+
+/* ============ НАВИГАЦИЯ ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 40px;
+  transition:background .4s ease,padding .4s ease,backdrop-filter .4s ease;
+}
+.nav.scrolled{
+  background:rgba(8,8,10,.72);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding:14px 40px;
+  border-bottom:1px solid var(--line);
+}
+.logo{
+  font-family:'Unbounded',sans-serif;font-weight:900;font-size:15px;
+  letter-spacing:.06em;display:flex;gap:8px;align-items:center;
+}
+.logo span{color:var(--acid);}
+.nav-links{display:flex;gap:34px;align-items:center;}
+.nav-links a{
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  position:relative;padding:4px 0;opacity:.8;transition:opacity .3s,color .3s;
+}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:var(--acid);transition:width .35s cubic-bezier(.2,.8,.2,1);
+}
+.nav-links a:hover{opacity:1;color:var(--acid);}
+.nav-links a:hover::after{width:100%;}
+.back-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  opacity:.8;transition:opacity .3s,color .3s;
+}
+.back-link:hover{opacity:1;color:var(--acid);}
+.back-link svg{transition:transform .3s;}
+.back-link:hover svg{transform:translateX(-4px);}
+
+/* ============ ОБЁРТКА ============ */
+.wrap{padding:130px 40px;max-width:1500px;margin:0 auto;}
+
+/* ============ АЛЬБОМ HERO ============ */
+.album-hero{
+  position:relative;
+  padding:150px 40px 80px;
+  max-width:1500px;
+  margin:0 auto;
+  overflow:hidden;
+}
+.album-hero::before{
+  content:'';
+  position:absolute;top:-10%;left:-15%;width:60vw;height:60vw;
+  background:radial-gradient(circle,rgba(200,255,0,.14) 0%,transparent 60%);
+  filter:blur(40px);pointer-events:none;z-index:0;
+  animation:float 9s ease-in-out infinite alternate;
+}
+@keyframes float{to{transform:translate(6%,10%) scale(1.1);}}
+
+.album-grid{
+  position:relative;z-index:2;
+  display:grid;
+  grid-template-columns:minmax(280px,520px) 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+/* Обложка */
+.album-cover{
+  position:relative;
+  aspect-ratio:1 / 1;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  padding:32px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:
+    radial-gradient(circle at 50% 50%, var(--acid) 0 4%, transparent 4.5% 100%),
+    repeating-radial-gradient(circle at 50% 50%, rgba(200,255,0,.75) 0 1.5px, transparent 1.5px 32px),
+    #0b0d06;
+  color:var(--acid);
+  box-shadow:0 40px 100px -40px rgba(200,255,0,.35);
+  transition:transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.album-cover:hover{transform:scale(1.015) rotate(-.4deg);}
+
+.album-cover .cover-top{
+  display:flex;justify-content:space-between;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.15em;
+}
+.album-cover .cover-bottom .artist{
+  font-size:11px;font-weight:800;letter-spacing:.3em;
+  opacity:.75;margin-bottom:12px;
+}
+.album-cover .cover-bottom .title{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2.4rem,5vw,4.2rem);
+  line-height:.88;letter-spacing:-.03em;text-transform:uppercase;
+}
+
+/* Инфо о релизе */
+.album-info{z-index:2;}
+.album-meta-row{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  font-size:11px;font-weight:800;letter-spacing:.22em;
+  margin-bottom:22px;
+}
+.album-meta-row .badge{
+  color:#000;background:var(--acid);
+  padding:6px 14px;border-radius:100px;
+}
+.album-meta-row .year{color:var(--muted);}
+.album-info h1{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2.8rem,7vw,6rem);
+  line-height:.85;letter-spacing:-.04em;
+  text-transform:uppercase;margin-bottom:26px;
+}
+.album-info h1 .outline{
+  color:transparent;-webkit-text-stroke:1.5px var(--fg);
+}
+.album-desc{
+  font-size:clamp(1rem,1.4vw,1.15rem);
+  line-height:1.6;color:var(--muted);
+  max-width:520px;margin-bottom:38px;
+}
+.album-desc em{font-style:normal;color:var(--acid);}
+
+.album-actions{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--acid);color:#000;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.14em;padding:20px 34px;border-radius:100px;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;
+  border:none;cursor:none;
+}
+.btn span{transition:transform .35s cubic-bezier(.2,.8,.2,1);}
+.btn:hover{transform:translateY(-4px);box-shadow:0 18px 50px -12px rgba(200,255,0,.6);}
+.btn:hover span{transform:translateX(6px);}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--line);border-radius:100px;
+  padding:20px 28px;
+  font-size:11px;font-weight:800;letter-spacing:.18em;
+  transition:border-color .3s,color .3s,transform .3s;
+}
+.btn-ghost:hover{border-color:var(--acid);color:var(--acid);transform:translateY(-3px);}
+
+/* ============ ТРЕКЛИСТ ============ */
+.tracklist-section{
+  background:#0c0c0f;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:24px;margin-bottom:44px;flex-wrap:wrap;
+}
+.section-label{
+  font-size:11px;font-weight:800;letter-spacing:.3em;color:var(--acid);
+}
+.section-title{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(1.8rem,4vw,3rem);line-height:.95;letter-spacing:-.03em;
+  text-transform:uppercase;
+}
+
+.tracklist{
+  display:flex;flex-direction:column;
+  border-top:1px solid var(--line);
+}
+
+.track{
+  display:grid;
+  grid-template-columns:64px 1fr auto;
+  align-items:center;
+  gap:24px;
+  padding:24px 22px;
+  border-bottom:1px solid var(--line);
+  transition:background .35s,color .35s,padding .4s cubic-bezier(.2,.8,.2,1);
+  cursor:none;
+  position:relative;
+}
+.track:hover{background:rgba(200,255,0,.05);padding-left:32px;}
+.track.active{background:var(--acid);color:#000;}
+
+/* Левый блок с номером / play */
+.track-num{
+  position:relative;
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:14px;
+  letter-spacing:.04em;
+}
+.track-num .num{transition:opacity .25s;}
+.track-num .ico{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  opacity:0;transition:opacity .25s;
+  font-size:14px;
+}
+.track:hover .track-num .num{opacity:0;}
+.track:hover .track-num .ico{opacity:1;}
+.track.active .track-num .num{opacity:0;}
+.track.active .track-num .ico{opacity:1;}
+
+.track-name{
+  display:flex;flex-direction:column;gap:4px;
+  min-width:0;
+}
+.track-name h3{
+  font-family:'Unbounded',sans-serif;font-weight:700;
+  font-size:clamp(1rem,1.8vw,1.3rem);
+  letter-spacing:-.01em;text-transform:uppercase;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.track-name .feat{
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  color:var(--muted);transition:color .35s;
+}
+.track.active .track-name .feat{color:rgba(0,0,0,.55);}
+
+.track-right{
+  display:flex;align-items:center;gap:22px;
+}
+.track-dur{
+  font-family:'Unbounded',sans-serif;font-weight:400;
+  font-size:13px;letter-spacing:.05em;
+  opacity:.7;font-variant-numeric:tabular-nums;
+}
+.track.active .track-dur{opacity:.85;}
+
+/* Мини-эквалайзер в активном треке */
+.track-eq{
+  display:none;align-items:flex-end;gap:3px;height:20px;width:24px;
+}
+.track.active .track-eq{display:flex;}
+.track-eq span{
+  flex:1;background:#000;border-radius:1px;
+  height:30%;
+  animation:teq .7s ease-in-out infinite alternate;
+}
+@keyframes teq{to{height:100%;}}
+
+/* ============ ФУТЕР ============ */
+.footer{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:34px 40px;
+  font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--muted);
+  flex-wrap:wrap;
+}
+
+/* ============ REVEAL ============ */
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.in{opacity:1;transform:none;}
+
+/* ============ АДАПТИВ ============ */
+@media (max-width:1000px){
+  .album-grid{grid-template-columns:1fr;gap:44px;}
+  .album-cover{max-width:520px;margin:0 auto;width:100%;}
+}
+@media (max-width:900px){
+  .nav{padding:18px 22px;}
+  .nav.scrolled{padding:12px 22px;}
+  .nav-links{display:none;}
+  .album-hero{padding:120px 22px 60px;}
+  .wrap{padding:80px 22px;}
+  .track{grid-template-columns:44px 1fr auto;gap:14px;padding:20px 4px;}
+  .track:hover{padding-left:12px;}
+  .track-dur{font-size:12px;}
+  .footer{padding:26px 22px;justify-content:center;text-align:center;}
+}
+@media (hover:none){
+  body{cursor:auto;}
+  .cursor{display:none;}
+  .btn, .track{cursor:pointer;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="cursor" id="cursor"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <a href="#" class="logo">MC<span>ЕЗДИТЬ</span></a>
+  <nav class="nav-links">
+    <a href="#" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      НАЗАД
+    </a>
+  </nav>
+</header>
+
+<!-- ================= АЛЬБОМ HERO ================= -->
+<section class="album-hero">
+  <div class="album-grid">
+
+    <!-- Обложка -->
+    <div class="album-cover reveal">
+      <div class="cover-top">
+        <span>MC ЕЗДИТЬ</span>
+        <span>SIGNAL / 2025</span>
+      </div>
+      <div class="cover-bottom">
+        <div class="artist">DEBUT EP</div>
+        <div class="title">Сигнал</div>
+      </div>
+    </div>
+
+    <!-- Инфо -->
+    <div class="album-info reveal">
+      <div class="album-meta-row">
+        <span class="badge">EP</span>
+        <span class="year">2025</span>
+        <span class="year">· 6 ТРЕКОВ</span>
+        <span class="year">· 21 МИН</span>
+      </div>
+
+      <h1>СИГНАЛ<br><span class="outline">EP</span></h1>
+
+      <p class="album-desc">
+        Шесть треков о том, как ловить <em>частоту</em> среди городского шума.
+        Первый полноценный релиз — записан в подвале, сведён ночью, отмастерен на чистом упрямстве.
+      </p>
+
+      <div class="album-actions">
+        <button class="btn" id="playAll">▶ СЛУШАТЬ <span>→</span></button>
+        <a href="#" class="btn-ghost">SPOTIFY</a>
+        <a href="#" class="btn-ghost">APPLE MUSIC</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= ТРЕКЛИСТ ================= -->
+<section class="tracklist-section">
+  <div class="wrap" style="padding-top:80px;padding-bottom:90px;">
+    <div class="section-head">
+      <div class="section-label">ТРЕКЛИСТ</div>
+      <div class="section-title reveal">6 треков</div>
+    </div>
+
+    <div class="tracklist" id="tracklist">
+
+      <div class="track reveal" data-track="0">
+        <div class="track-num">
+          <span class="num">01</span>
+          <span class="ico">▶</span>
+        </div>
+        <div class="track-name">
+          <h3>Интро / Частота</h3>
+          <span class="feat">INTRO</span>
+        </div>
+        <div class="track-right">
+          <div class="track-eq"><span></span><span></span><span></span><span></span></div>
+          <span class="track-dur">1:42</span>
+        </div>
+      </div>
+
+      <div class="track reveal" data-track="1">
+        <div class="track-num">
+          <span class="num">02</span>
+          <span class="ico">▶</span>
+        </div>
+        <div class="track-name">
+          <h3>Сигнал</h3>
+          <span class="feat">MAIN SINGLE</span>
+        </div>
+        <div class="track-right">
+          <div class="track-eq"><span></span><span></span><span></span><span></span></div>
+          <span class="track-dur">3:18</span>
+        </div>
+      </div>
+
+      <div class="track reveal" data-track="2">
+        <div class="track-num">
+          <span class="num">03</span>
+          <span class="ico">▶</span>
+        </div>
+        <div class="track-name">
+          <h3>Без фильтров</h3>
+          <span class="feat">FEAT. NIGHT CALL</span>
+        </div>
+        <div class="track-right">
+          <div class="track-eq"><span></span><span></span><span></span><span></span></div>
+          <span class="track-dur">3:44</span>
+        </div>
+      </div>
+
+      <div class="track reveal" data-track="3">
+        <div class="track-num">
+          <span class="num">04</span>
+          <span class="ico">▶</span>
+        </div>
+        <div class="track-name">
+          <h3>Помехи</h3>
+          <span class="feat">INTERLUDE</span>
+        </div>
+        <div class="track-right">
+          <div class="track-eq"><span></span><span></span><span></span><span></span></div>
+          <span class="track-dur">2:07</span>
+        </div>
+      </div>
+
+      <div class="track reveal" data-track="4">
+        <div class="track-num">
+          <span class="num">05</span>
+          <span class="ico">▶</span>
+        </div>
+        <div class="track-name">
+          <h3>Пульс</h3>
+          <span class="feat">SINGLE</span>
+        </div>
+        <div class="track-right">
+          <div class="track-eq"><span></span><span></span><span></span><span></span></div>
+          <span class="track-dur">3:32</span>
+        </div>
+      </div>
+
+      <div class="track reveal" data-track="5">
+        <div class="track-num">
+          <span class="num">06</span>
+          <span class="ico">▶</span>
+        </div>
+        <div class="track-name">
+          <h3>Выдох</h3>
+          <span class="feat">OUTRO</span>
+        </div>
+        <div class="track-right">
+          <div class="track-eq"><span></span><span></span><span></span><span></span></div>
+          <span class="track-dur">4:12</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= ФУТЕР ================= -->
+<footer class="footer">
+  <span>© <span id="year"></span> MC ЕЗДИТЬ</span>
+  <span>СДЕЛАНО С ЛЮБОВЬЮ К ЗВУКУ</span>
+</footer>
+
+<script>
+/* ---------- Год ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- Кастомный курсор ---------- */
+const cursor = document.getElementById('cursor');
+let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+let tx = cx, ty = cy;
+window.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+function loop() {
+  cx += (tx - cx) * 0.18;
+  cy += (ty - cy) * 0.18;
+  cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+  requestAnimationFrame(loop);
+}
+loop();
+document.querySelectorAll('a, button, .track').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+/* ---------- Навигация ---------- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+/* ---------- Reveal ---------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.transitionDelay = (i % 6) * 0.06 + 's';
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- Плеер-заглушка ---------- */
+const tracks = document.querySelectorAll('.track');
+let currentTrack = -1;
+
+function setTrack(index){
+  tracks.forEach((t, i) => t.classList.toggle('active', i === index));
+  currentTrack = index;
+  // Меняем иконку ▶ на ⏸ для активного трека
+  tracks.forEach((t, i) => {
+    const ico = t.querySelector('.ico');
+    ico.textContent = (i === index) ? '❚❚' : '▶';
+  });
+}
+
+tracks.forEach((track, i) => {
+  track.addEventListener('click', () => {
+    // Клик по активному треку — "пауза"
+    if (currentTrack === i) {
+      setTrack(-1);
+    } else {
+      setTrack(i);
+    }
+  });
+});
+
+/* Кнопка "Слушать" — включает первый трек */
+document.getElementById('playAll').addEventListener('click', () => {
+  setTrack(0);
+  document.getElementById('tracklist').scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
+</body>
+</html>

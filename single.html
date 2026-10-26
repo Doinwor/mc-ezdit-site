@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СИНГЛ — MC ЕЗДИТЬ</title>
+<meta name="description" content="Новый сингл MC ЕЗДИТЬ. Слушай целиком.">
+
+<meta name="theme-color" content="#08080a">
+<meta property="og:type" content="music.song">
+<meta property="og:title" content="СИНГЛ — MC ЕЗДИТЬ">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23c8ff00'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23c8ff00' stroke-width='1.6' opacity='.6'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23c8ff00' stroke-width='1.2' opacity='.25'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============ БАЗА ============ */
+:root{
+  --bg:#08080a;
+  --fg:#f2f2f2;
+  --muted:#8a8a92;
+  --acid:#c8ff00;
+  --line:rgba(255,255,255,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Manrope',system-ui,sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior-y:none;
+}
+
+/* Отключаем системный зум шрифта и серую вспышку при тапе.
+   touch-action:manipulation убирает 300ms задержку двойного тапа. */
+a,button,input,label,summary{touch-action:manipulation;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+button{font:inherit;color:inherit;background:none;border:none;}
+::selection{background:var(--acid);color:#000;}
+:focus-visible{outline:2px solid var(--acid);outline-offset:4px;border-radius:2px;}
+
+.skip-link{
+  position:fixed;top:-100px;left:20px;z-index:1000;
+  background:var(--acid);color:#000;padding:14px 22px;border-radius:100px;
+  font-size:11px;font-weight:800;letter-spacing:.16em;transition:top .3s;
+}
+.skip-link:focus{top:16px;}
+
+/* ============ КУРСОР ============ */
+.cursor{
+  position:fixed;top:0;left:0;width:14px;height:14px;border-radius:50%;
+  background:var(--acid);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s ease,height .25s ease,background .25s ease;
+  box-shadow:0 0 18px rgba(200,255,0,.55);
+}
+.cursor.big{width:56px;height:56px;background:rgba(200,255,0,.9);mix-blend-mode:difference;box-shadow:none;}
+body.no-custom-cursor{cursor:auto;}
+body.no-custom-cursor .cursor{display:none;}
+
+/* ============ НАВИГАЦИЯ ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(22px + env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) 22px max(22px,env(safe-area-inset-left));
+  transition:background .3s ease,padding .3s ease,border-color .3s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:#0a0a0c;
+  padding:calc(12px + env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) 12px max(22px,env(safe-area-inset-left));
+  border-bottom-color:var(--line);
+}
+.logo{
+  font-family:'Unbounded',sans-serif;font-weight:900;font-size:15px;
+  letter-spacing:.06em;display:flex;gap:8px;align-items:center;
+}
+.logo span{color:var(--acid);}
+.nav-links{display:flex;gap:34px;align-items:center;}
+.nav-links a{
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  position:relative;padding:4px 0;opacity:.8;transition:opacity .25s,color .25s;
+}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:var(--acid);transition:width .3s ease;
+}
+.nav-links a:hover{opacity:1;color:var(--acid);}
+.nav-links a:hover::after{width:100%;}
+.back-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  opacity:.8;transition:opacity .25s,color .25s;
+}
+.back-link:hover{opacity:1;color:var(--acid);}
+.back-link svg{transition:transform .25s;}
+.back-link:hover svg{transform:translateX(-4px);}
+
+/* ============ ОБЁРТКА ============ */
+.wrap{padding:110px 40px;max-width:1500px;margin:0 auto;}
+
+/* ============ СИНГЛ HERO ============ */
+.single-hero{
+  position:relative;
+  padding:140px 40px 70px;
+  max-width:1500px;margin:0 auto;
+}
+.single-hero::before{
+  content:'';position:absolute;top:-180px;left:-200px;
+  width:760px;height:760px;
+  background:radial-gradient(circle, rgba(200,255,0,.13) 0%, rgba(200,255,0,.04) 38%, transparent 68%);
+  pointer-events:none;z-index:0;
+}
+
+.single-grid{
+  position:relative;z-index:2;
+  display:grid;
+  grid-template-columns:minmax(260px,440px) minmax(0,1fr);
+  gap:56px;align-items:center;
+}
+
+/* Обложка */
+.single-cover{
+  position:relative;
+  aspect-ratio:1 / 1;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:0 30px 70px -40px rgba(0,0,0,.95);
+  background:#0b0b0d;
+  transition:transform .5s ease;
+}
+.single-cover:hover{transform:scale(1.01);}
+.single-cover img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.cover-tag{
+  position:absolute;left:16px;bottom:16px;z-index:2;
+  background:#101014;
+  border:1px solid var(--line);border-radius:100px;
+  padding:9px 16px;
+  font-size:10px;font-weight:800;letter-spacing:.18em;color:var(--acid);
+}
+
+/* Инфо */
+.single-info{z-index:2;min-width:0;}
+.single-meta-row{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-size:11px;font-weight:800;letter-spacing:.2em;
+  margin-bottom:20px;
+}
+.single-meta-row .badge{
+  color:#000;background:var(--acid);
+  padding:6px 14px;border-radius:100px;
+}
+.single-meta-row .year{color:var(--muted);}
+
+.single-info h1{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(1.35rem,5.4vw,3.3rem);
+  line-height:1.06;letter-spacing:-.045em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  max-width:100%;
+  hyphens:none;
+}
+
+.single-desc{
+  font-size:clamp(.98rem,1.3vw,1.12rem);
+  line-height:1.62;color:var(--muted);
+  max-width:540px;margin-bottom:34px;
+}
+.single-desc em{font-style:normal;color:var(--acid);}
+
+.single-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--acid);color:#000;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.14em;padding:20px 34px;border-radius:100px;
+  transition:transform .3s ease,box-shadow .3s ease;
+  cursor:none;
+}
+.btn span{transition:transform .3s ease;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 34px -14px rgba(200,255,0,.55);}
+.btn:hover span{transform:translateX(5px);}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--line);border-radius:100px;
+  padding:20px 28px;
+  font-size:11px;font-weight:800;letter-spacing:.18em;
+  transition:border-color .25s,color .25s,transform .25s;
+  cursor:none;
+}
+.btn-ghost:hover{border-color:var(--acid);color:var(--acid);transform:translateY(-2px);}
+
+/* ============ ПЛЕЕР-БЛОК ============ */
+.player-section{
+  background:#0c0c0f;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.player-block{
+  display:flex;align-items:center;gap:20px;
+  padding:26px;
+  border:1px solid var(--line);border-radius:16px;
+  background:#101014;
+  flex-wrap:wrap;
+}
+.pb-main{
+  display:flex;align-items:center;gap:16px;flex:1;min-width:260px;
+}
+.pb-play{
+  width:60px;height:60px;border-radius:50%;flex:none;
+  background:var(--acid);color:#000;
+  display:grid;place-items:center;font-size:17px;
+  transition:transform .25s;cursor:none;
+}
+.pb-play:hover{transform:scale(1.06);}
+.pb-meta{min-width:0;flex:1;}
+.pb-title{
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:13px;
+  text-transform:uppercase;letter-spacing:-.01em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.pb-sub{font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--muted);margin-top:5px;}
+.pb-bar{
+  position:relative;height:5px;margin-top:12px;
+  background:rgba(255,255,255,.14);border-radius:100px;cursor:pointer;
+}
+.pb-progress{
+  position:absolute;left:0;top:0;bottom:0;width:0%;
+  background:var(--acid);border-radius:100px;
+}
+.pb-time{
+  font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap;flex:none;
+}
+
+/* ============ ЕЩЁ ============ */
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:24px;margin-bottom:40px;flex-wrap:wrap;
+}
+.section-label{font-size:11px;font-weight:800;letter-spacing:.3em;color:var(--acid);}
+.section-title{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(1.7rem,3.8vw,2.8rem);line-height:.95;letter-spacing:-.03em;
+  text-transform:uppercase;
+}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.more a{
+  display:flex;flex-direction:column;gap:10px;
+  border:1px solid var(--line);border-radius:12px;padding:22px;
+  transition:border-color .25s,transform .3s ease,background .25s;
+}
+.more a:hover{border-color:rgba(200,255,0,.55);transform:translateY(-4px);background:rgba(200,255,0,.03);}
+.more a span{font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--acid);}
+.more a strong{
+  font-family:'Unbounded',sans-serif;font-weight:900;font-size:1.12rem;
+  text-transform:uppercase;letter-spacing:-.02em;
+}
+
+/* ============ ФУТЕР ============ */
+.footer{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:34px 40px 60px;
+  font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--muted);
+  flex-wrap:wrap;
+}
+.footer a{transition:color .25s;}
+.footer a:hover{color:var(--acid);}
+
+/* ============ REVEAL ============ */
+.reveal{
+  opacity:0;transform:translateY(22px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.in{opacity:1;transform:none;}
+
+/* ============ АДАПТИВ ============ */
+@media (max-width:1000px){
+  .single-grid{grid-template-columns:1fr;gap:40px;}
+  .single-cover{max-width:480px;margin:0 auto;width:100%;}
+}
+@media (max-width:900px){
+  .nav{padding:calc(16px + env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 16px max(20px,env(safe-area-inset-left));}
+  .nav.scrolled{padding:calc(10px + env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 10px max(20px,env(safe-area-inset-left));}
+  .nav-links a:not(.back-link){display:none;}
+  .single-hero{padding:110px 22px 50px;}
+  .wrap{padding:70px 22px;}
+  .player-block{padding:18px;gap:14px;}
+  .pb-time{font-size:10px;}
+  .footer{padding:26px 22px 50px;justify-content:center;text-align:center;}
+}
+@media (max-width:560px){
+  .single-actions .btn,.single-actions .btn-ghost{width:100%;justify-content:center;}
+  .pb-main{min-width:0;}
+  /* Цель тапа не меньше 44px, полоса прогресса — вся кликабельная */
+  .pb-play{width:60px;height:60px;flex:none;}
+  .pb-bar{height:36px;}
+}
+/* Тач-экраны: убираем blur под шапкой и все hover-эффекты,
+   которые на телефоне остаются «прилипшими» после тапа. */
+@media (hover:none){
+  .nav.scrolled{backdrop-filter:none;-webkit-backdrop-filter:none;background:#0a0a0c;}
+  .reveal{transition-duration:.3s;}
+}
+@media (hover:none){
+  body{cursor:auto;}
+  .cursor{display:none;}
+  .btn,.btn-ghost,.pb-play,.pb-bar{cursor:pointer;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">К содержанию</a>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <a href="index.html" class="logo" aria-label="MC ЕЗДИТЬ — на главную">MC<span>ЕЗДИТЬ</span></a>
+  <nav class="nav-links" aria-label="Навигация">
+    <a href="index.html#releases">РЕЛИЗЫ</a>
+    <a href="index.html#tour">ТУР</a>
+    <a href="index.html#contact">КОНТАКТ</a>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      НАЗАД
+    </a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ================= СИНГЛ HERO ================= -->
+<section class="single-hero">
+  <div class="single-grid">
+
+    <div class="single-cover reveal">
+      <img id="cover" src="" alt="" width="1200" height="1200">
+      <div class="cover-tag" id="coverTag"></div>
+    </div>
+
+    <div class="single-info reveal">
+      <div class="single-meta-row">
+        <span class="badge">СИНГЛ</span>
+        <span class="year" id="metaYear"></span>
+        <span class="year" id="metaDur"></span>
+      </div>
+
+      <h1 id="title"></h1>
+
+      <p class="single-desc" id="desc"></p>
+
+      <div class="single-actions">
+        <button class="btn" id="playAll">▶ СЛУШАТЬ <span>→</span></button>
+        <a href="index.html#contact" class="btn-ghost">БУКИНГ И ФИТЫ</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= ПЛЕЕР ================= -->
+<section class="player-section">
+  <div class="wrap" style="padding-top:60px;padding-bottom:60px;">
+    <div class="player-block reveal">
+      <div class="pb-main">
+        <button class="pb-play" id="pbPlay" aria-label="Воспроизвести">▶</button>
+        <div class="pb-meta">
+          <div class="pb-title" id="pbTitle"></div>
+          <div class="pb-sub" id="pbSub">MC ЕЗДИТЬ</div>
+          <div class="pb-bar" id="pbBar"><div class="pb-progress" id="pbProgress"></div></div>
+        </div>
+      </div>
+      <span class="pb-time" id="pbTime">0:00 / 0:00</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЕЩЁ ================= -->
+<section class="wrap" aria-labelledby="moreTitle">
+  <div class="section-head">
+    <div class="section-label">ЕЩЁ ЗВУК</div>
+    <h2 class="section-title" id="moreTitle">Слушай<br>дальше</h2>
+  </div>
+  <div class="more reveal" id="moreList"></div>
+</section>
+
+</main>
+
+<!-- ================= ФУТЕР ================= -->
+<footer class="footer">
+  <span>© <span id="year"></span> MC ЕЗДИТЬ</span>
+  <span>СДЕЛАНО С ЛЮБОВЬЮ К ЗВУКУ</span>
+  <a href="index.html">НА ГЛАВНУЮ ↑</a>
+</footer>
+
+<script>
+/* =====================================================================
+   ДАННЫЕ СИНГЛОВ. Длительности посчитаны по MP3-кадрам.
+   ===================================================================== */
+const SINGLES = {
+  'perezvon': {
+    title:'Перезвон',
+    year:2026,
+    dur:563,
+    cover:'assets/img/perezvon.jpg',
+    src:'assets/audio/singles/perezvon.mp3',
+    desc:'Девять с лишним минут на одной ноте. <em>Колокол</em>, который звонит не по расписанию, а когда само накатит. Записан за один дубль, сведён без правок.'
+  },
+  'mama-papa': {
+    title:'МАМА ПАПА',
+    year:2026,
+    dur:176,
+    cover:'assets/img/mama-papa.jpg',
+    src:'assets/audio/singles/mama-papa.mp3',
+    desc:'Три минуты про <em>самое главное</em>. Без соплей, без морали — просто как есть. Самый короткий и самый громкий трек в каталоге.'
+  }
+};
+
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+
+/* ---------- Выбор сингла из ?t= ---------- */
+const params = new URLSearchParams(location.search);
+const key = params.get('t') || 'perezvon';
+const S = SINGLES[key] || SINGLES['perezvon'];
+const otherKey = key === 'perezvon' ? 'mama-papa' : 'perezvon';
+const other = SINGLES[otherKey];
+
+/* ---------- Заполнение ---------- */
+document.title = S.title.toUpperCase() + ' — MC ЕЗДИТЬ';
+document.getElementById('cover').src = S.cover;
+document.getElementById('cover').alt = 'Обложка сингла «' + S.title + '»';
+document.getElementById('coverTag').textContent = fmt(S.dur);
+document.getElementById('metaYear').textContent = S.year;
+document.getElementById('metaDur').textContent = '· ' + fmt(S.dur);
+document.getElementById('title').textContent = S.title;
+document.getElementById('desc').innerHTML = S.desc;
+document.getElementById('pbTitle').textContent = S.title;
+document.getElementById('pbTime').textContent = '0:00 / ' + fmt(S.dur);
+document.getElementById('year').textContent = new Date().getFullYear();
+
+document.getElementById('moreList').innerHTML = `
+  <a href="single.html?t=${otherKey}"><span>СИНГЛ · ${other.year}</span><strong>${esc(other.title)}</strong></a>
+  <a href="mertvorozhdennye.html"><span>АЛЬБОМ · 2024</span><strong>Мёртворождённые</strong></a>
+  <a href="index.html#releases"><span>КАТАЛОГ</span><strong>Все релизы</strong></a>`;
+
+/* =====================================================================
+   ПЛЕЕР (ленивый, без проб метаданных)
+   ===================================================================== */
+(function initPlayer(){
+  const playBtn = document.getElementById('pbPlay');
+  const pBar    = document.getElementById('pbBar');
+  const pProg   = document.getElementById('pbProgress');
+  const pTime   = document.getElementById('pbTime');
+
+  let audio = null;
+
+  function ensureAudio() {
+    if (audio) return;
+    audio = new Audio();
+    audio.preload = 'none';
+    audio.src = S.src;
+    audio.addEventListener('play', () => {
+      playBtn.textContent = '❚❚';
+      playBtn.setAttribute('aria-label', 'Пауза');
+    });
+    audio.addEventListener('pause', () => {
+      playBtn.textContent = '▶';
+      playBtn.setAttribute('aria-label', 'Воспроизвести');
+    });
+    audio.addEventListener('ended', () => {
+      playBtn.textContent = '▶';
+      pProg.style.width = '0%';
+      pTime.textContent = '0:00 / ' + fmt(S.dur);
+    });
+    audio.addEventListener('timeupdate', () => {
+      const cur = audio.currentTime;
+      pProg.style.width = (cur / S.dur) * 100 + '%';
+      pTime.textContent = fmt(cur) + ' / ' + fmt(S.dur);
+    });
+    audio.addEventListener('error', () => {
+      pTime.textContent = 'файл не найден';
+    });
+  }
+
+  function toggle() {
+    ensureAudio();
+    audio.paused ? audio.play().catch(() => {}) : audio.pause();
+  }
+
+  playBtn.addEventListener('click', toggle);
+  document.getElementById('playAll').addEventListener('click', () => {
+    ensureAudio();
+    if (audio.paused) audio.play().catch(() => {});
+    document.querySelector('.player-block').scrollIntoView({ behavior:'smooth', block:'center' });
+  });
+
+  pBar.addEventListener('click', (e) => {
+    if (!audio) return;
+    const r = pBar.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - r.left) / r.width) * S.dur;
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code !== 'Space' || e.repeat) return;
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    e.preventDefault();
+    toggle();
+  });
+})();
+
+/* ---------- Курсор (как на главной) ---------- */
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduced || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  document.body.classList.add('no-custom-cursor');
+} else {
+  const cursor = document.getElementById('cursor');
+  let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+  let tx = cx, ty = cy;
+  window.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+  (function loop() {
+    cx += (tx - cx) * 0.18;
+    cy += (ty - cy) * 0.18;
+    cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+    requestAnimationFrame(loop);
+  })();
+  const HOT = 'a, button, .pb-bar';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(HOT)) cursor.classList.add('big');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(HOT) && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(HOT))) {
+      cursor.classList.remove('big');
+    }
+  });
+}
+
+/* ---------- Навигация ---------- */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+/* ---------- Reveal ---------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

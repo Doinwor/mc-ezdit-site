@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>МЁРТВОРОЖДЁННЫЕ — MC ЕЗДИТЬ</title>
+<meta name="description" content="МЁРТВОРОЖДЁННЫЕ — альбом MC ЕЗДИТЬ. Вышел 30 августа 2024. Восемь треков, слушай целиком.">
+
+<meta name="theme-color" content="#08080a">
+<meta property="og:type" content="music.album">
+<meta property="og:title" content="МЁРТВОРОЖДЁННЫЕ — MC ЕЗДИТЬ">
+<meta property="og:description" content="Альбом 2024. Восемь треков. Дата выхода — 30 августа 2024.">
+<meta property="og:image" content="assets/img/mertvorozhdennye.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23c8ff00'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23c8ff00' stroke-width='1.6' opacity='.6'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23c8ff00' stroke-width='1.2' opacity='.25'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============ БАЗА ============ */
+:root{
+  --bg:#08080a;
+  --fg:#f2f2f2;
+  --muted:#8a8a92;
+  --acid:#c8ff00;
+  --line:rgba(255,255,255,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Manrope',system-ui,sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior-y:none;
+}
+
+/* Отключаем системный зум шрифта и серую вспышку при тапе.
+   touch-action:manipulation убирает 300ms задержку двойного тапа. */
+a,button,input,label,summary{touch-action:manipulation;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+button{font:inherit;color:inherit;background:none;border:none;}
+::selection{background:var(--acid);color:#000;}
+:focus-visible{outline:2px solid var(--acid);outline-offset:4px;border-radius:2px;}
+
+.skip-link{
+  position:fixed;top:-100px;left:20px;z-index:1000;
+  background:var(--acid);color:#000;padding:14px 22px;border-radius:100px;
+  font-size:11px;font-weight:800;letter-spacing:.16em;transition:top .3s;
+}
+.skip-link:focus{top:16px;}
+
+/* ============ КУРСОР ============ */
+.cursor{
+  position:fixed;top:0;left:0;width:14px;height:14px;border-radius:50%;
+  background:var(--acid);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s ease,height .25s ease,background .25s ease;
+  box-shadow:0 0 18px rgba(200,255,0,.55);
+}
+.cursor.big{width:56px;height:56px;background:rgba(200,255,0,.9);mix-blend-mode:difference;box-shadow:none;}
+body.no-custom-cursor{cursor:auto;}
+body.no-custom-cursor .cursor{display:none;}
+
+/* ============ НАВИГАЦИЯ ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(22px + env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) 22px max(22px,env(safe-area-inset-left));
+  transition:background .3s ease,padding .3s ease,border-color .3s ease;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:#0a0a0c;
+  padding:calc(12px + env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) 12px max(22px,env(safe-area-inset-left));
+  border-bottom-color:var(--line);
+}
+.logo{
+  font-family:'Unbounded',sans-serif;font-weight:900;font-size:15px;
+  letter-spacing:.06em;display:flex;gap:8px;align-items:center;
+}
+.logo span{color:var(--acid);}
+.nav-links{display:flex;gap:34px;align-items:center;}
+.nav-links a{
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  position:relative;padding:4px 0;opacity:.8;transition:opacity .25s,color .25s;
+}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:var(--acid);transition:width .3s ease;
+}
+.nav-links a:hover{opacity:1;color:var(--acid);}
+.nav-links a:hover::after{width:100%;}
+.back-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11px;font-weight:800;letter-spacing:.16em;
+  opacity:.8;transition:opacity .25s,color .25s;
+}
+.back-link:hover{opacity:1;color:var(--acid);}
+.back-link svg{transition:transform .25s;}
+.back-link:hover svg{transform:translateX(-4px);}
+
+/* ============ ОБЁРТКА ============ */
+.wrap{padding:120px 40px;max-width:1500px;margin:0 auto;}
+
+/* ============ АЛЬБОМ HERO ============ */
+.album-hero{
+  position:relative;
+  padding:140px 40px 70px;
+  max-width:1500px;margin:0 auto;
+}
+.album-hero::before{
+  content:'';position:absolute;top:-180px;left:-200px;
+  width:760px;height:760px;
+  background:radial-gradient(circle, rgba(200,255,0,.13) 0%, rgba(200,255,0,.04) 38%, transparent 68%);
+  pointer-events:none;z-index:0;
+}
+
+.album-grid{
+  position:relative;z-index:2;
+  display:grid;
+  grid-template-columns:minmax(260px,440px) minmax(0,1fr);
+  gap:56px;align-items:center;
+}
+
+/* Обложка */
+.album-cover{
+  position:relative;
+  aspect-ratio:1 / 1;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:0 30px 70px -40px rgba(0,0,0,.95);
+  transition:transform .5s ease;
+}
+.album-cover:hover{transform:scale(1.01);}
+.album-cover img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.cover-tag{
+  position:absolute;left:16px;bottom:16px;z-index:2;
+  background:#101014;
+  border:1px solid var(--line);border-radius:100px;
+  padding:9px 16px;
+  font-size:10px;font-weight:800;letter-spacing:.18em;color:var(--acid);
+}
+
+/* Инфо */
+.album-info{z-index:2;min-width:0;}
+.album-meta-row{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-size:11px;font-weight:800;letter-spacing:.2em;
+  margin-bottom:20px;
+}
+.album-meta-row .badge{
+  color:#000;background:var(--acid);
+  padding:6px 14px;border-radius:100px;
+}
+.album-meta-row .year{color:var(--muted);}
+
+.album-info h1{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(1.25rem,5.2vw,3.1rem);
+  line-height:1.06;letter-spacing:-.045em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  max-width:100%;
+  hyphens:none;
+}
+
+.album-desc{
+  font-size:clamp(.98rem,1.3vw,1.12rem);
+  line-height:1.62;color:var(--muted);
+  max-width:540px;margin-bottom:34px;
+}
+.album-desc em{font-style:normal;color:var(--acid);}
+
+.album-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--acid);color:#000;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.14em;padding:20px 34px;border-radius:100px;
+  transition:transform .3s ease,box-shadow .3s ease;
+  cursor:none;
+}
+.btn span{transition:transform .3s ease;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 34px -14px rgba(200,255,0,.55);}
+.btn:hover span{transform:translateX(5px);}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--line);border-radius:100px;
+  padding:20px 28px;
+  font-size:11px;font-weight:800;letter-spacing:.18em;
+  transition:border-color .25s,color .25s,transform .25s;
+  cursor:none;
+}
+.btn-ghost:hover{border-color:var(--acid);color:var(--acid);transform:translateY(-2px);}
+
+/* ============ ТРЕКЛИСТ ============ */
+.tracklist-section{
+  background:#0c0c0f;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:24px;margin-bottom:40px;flex-wrap:wrap;
+}
+.section-label{font-size:11px;font-weight:800;letter-spacing:.3em;color:var(--acid);}
+.section-title{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(1.7rem,3.8vw,2.8rem);line-height:.95;letter-spacing:-.03em;
+  text-transform:uppercase;
+}
+
+.tracklist{display:flex;flex-direction:column;border-top:1px solid var(--line);}
+
+.track{
+  position:relative;
+  display:grid;
+  grid-template-columns:56px 1fr auto;
+  align-items:center;gap:20px;
+  width:100%;text-align:left;
+  padding:22px 18px;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  transition:background .25s,color .25s,padding .3s ease;
+  cursor:none;
+}
+.track:hover{background:rgba(200,255,0,.05);padding-left:28px;}
+.track.active{background:var(--acid);color:#000;}
+
+.track-num{
+  position:relative;width:34px;height:34px;
+  display:grid;place-items:center;
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:13px;letter-spacing:.04em;
+}
+.track-num .num{transition:opacity .2s;}
+.track-num .ico{
+  position:absolute;inset:0;display:grid;place-items:center;
+  opacity:0;transition:opacity .2s;font-size:13px;
+}
+.track:hover .num,.track.active .num{opacity:0;}
+.track:hover .ico,.track.active .ico{opacity:1;}
+
+.track-name{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.track-name .t{
+  font-family:'Unbounded',sans-serif;font-weight:700;
+  font-size:clamp(.92rem,1.7vw,1.2rem);
+  letter-spacing:-.01em;text-transform:uppercase;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.track-name .feat{
+  font-size:10px;font-weight:800;letter-spacing:.18em;
+  color:var(--muted);transition:color .25s;
+}
+.track.active .track-name .feat{color:rgba(0,0,0,.6);}
+
+.track-right{display:flex;align-items:center;gap:16px;}
+.track-dur{
+  font-family:'Unbounded',sans-serif;font-weight:400;font-size:12px;
+  letter-spacing:.05em;opacity:.7;font-variant-numeric:tabular-nums;
+  min-width:42px;text-align:right;
+}
+
+/* Полоса прогресса внутри активной строки */
+.track-line{
+  position:absolute;left:0;bottom:-1px;height:2px;width:0%;
+  background:#000;opacity:.45;pointer-events:none;
+}
+.track.active .track-line{opacity:.55;}
+
+/* ============ ПЛЕЕР ============ */
+.player{
+  position:fixed;left:50%;
+  bottom:calc(18px + env(safe-area-inset-bottom));
+  transform:translate(-50%,180%);
+  z-index:95;
+  width:min(720px,calc(100vw - 24px));
+  display:flex;align-items:center;gap:14px;
+  padding:12px 16px;
+  background:#101014;
+  border:1px solid var(--line);border-radius:100px;
+  box-shadow:0 24px 60px -24px rgba(0,0,0,.95);
+  transition:transform .4s ease;
+}
+.player.show{transform:translate(-50%,0);}
+.player-cover{
+  width:46px;height:46px;border-radius:50%;flex:none;
+  object-fit:cover;border:1px solid var(--line);
+}
+
+.player-info{min-width:0;flex:1;}
+.player-title{
+  font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:-.01em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.player-bar{
+  position:relative;height:4px;margin-top:8px;
+  background:rgba(255,255,255,.14);border-radius:100px;cursor:pointer;
+}
+.player-progress{
+  position:absolute;left:0;top:0;bottom:0;width:0%;
+  background:var(--acid);border-radius:100px;
+}
+.player-time{
+  font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap;flex:none;
+}
+.p-btn{
+  width:38px;height:38px;border-radius:50%;flex:none;
+  border:1px solid var(--line);color:var(--fg);
+  display:grid;place-items:center;font-size:11px;
+  transition:border-color .25s,color .25s,transform .25s;cursor:none;
+}
+.p-btn:hover{border-color:var(--acid);color:var(--acid);}
+.p-btn.main{
+  width:44px;height:44px;background:var(--acid);color:#000;
+  border-color:var(--acid);font-size:13px;
+}
+.p-btn.main:hover{color:#000;transform:scale(1.06);}
+.p-close{
+  width:32px;height:32px;border-radius:50%;flex:none;
+  border:1px solid var(--line);color:var(--muted);
+  display:grid;place-items:center;font-size:13px;
+  transition:color .25s,border-color .25s;cursor:none;
+}
+.p-close:hover{color:var(--acid);border-color:var(--acid);}
+
+/* ============ ЕЩЁ РЕЛИЗЫ ============ */
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.more a{
+  display:flex;flex-direction:column;gap:10px;
+  border:1px solid var(--line);border-radius:12px;padding:22px;
+  transition:border-color .25s,transform .3s ease,background .25s;
+}
+.more a:hover{border-color:rgba(200,255,0,.55);transform:translateY(-4px);background:rgba(200,255,0,.03);}
+.more a span{font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--acid);}
+.more a strong{
+  font-family:'Unbounded',sans-serif;font-weight:900;font-size:1.12rem;
+  text-transform:uppercase;letter-spacing:-.02em;
+}
+
+/* ============ ФУТЕР ============ */
+.footer{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:34px 40px 120px;
+  font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--muted);
+  flex-wrap:wrap;
+}
+.footer a{transition:color .25s;}
+.footer a:hover{color:var(--acid);}
+
+/* ============ REVEAL ============ */
+.reveal{
+  opacity:0;transform:translateY(22px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.in{opacity:1;transform:none;}
+
+/* ============ АДАПТИВ ============ */
+@media (max-width:1000px){
+  .album-grid{grid-template-columns:1fr;gap:40px;}
+  .album-cover{max-width:480px;margin:0 auto;width:100%;}
+}
+@media (max-width:900px){
+  .nav{padding:calc(16px + env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 16px max(20px,env(safe-area-inset-left));}
+  .nav.scrolled{padding:calc(10px + env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 10px max(20px,env(safe-area-inset-left));}
+  .nav-links a:not(.back-link){display:none;}
+  .album-hero{padding:110px 22px 50px;}
+  .wrap{padding:80px 22px;}
+  .track{grid-template-columns:40px 1fr auto;gap:12px;padding:18px 4px;}
+  .track:hover{padding-left:12px;}
+  .track-dur{min-width:38px;font-size:11px;}
+  .footer{padding:26px 22px 110px;justify-content:center;text-align:center;}
+  .player{gap:10px;padding:10px 12px;}
+  .player-time{display:none;}
+  .p-btn:not(.main){display:none;}
+}
+@media (max-width:560px){
+  .album-actions .btn,.album-actions .btn-ghost{width:100%;justify-content:center;}
+  /* Плеер не должен перекрывать треклист и уходить под системные полосы */
+  .player{gap:10px;padding:10px 12px;}
+  .player-cover{width:40px;height:40px;}
+  .track-row{padding:16px 2px;}
+}
+/* Тач-экраны: убираем blur под шапкой и все hover-эффекты,
+   которые на телефоне остаются «прилипшими» после тапа. */
+@media (hover:none){
+  .nav.scrolled{backdrop-filter:none;-webkit-backdrop-filter:none;background:#0a0a0c;}
+  .reveal{transition-duration:.3s;}
+}
+@media (hover:none){
+  body{cursor:auto;}
+  .cursor{display:none;}
+  .btn,.btn-ghost,.track,.p-btn,.p-close{cursor:pointer;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">К содержанию</a>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <a href="index.html" class="logo" aria-label="MC ЕЗДИТЬ — на главную">MC<span>ЕЗДИТЬ</span></a>
+  <nav class="nav-links" aria-label="Навигация">
+    <a href="index.html#releases">РЕЛИЗЫ</a>
+    <a href="index.html#tour">ТУР</a>
+    <a href="index.html#contact">КОНТАКТ</a>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      НАЗАД
+    </a>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ================= АЛЬБОМ HERO ================= -->
+<section class="album-hero">
+  <div class="album-grid">
+
+    <div class="album-cover reveal">
+      <img src="assets/img/mertvorozhdennye.jpg" alt="Обложка альбома «Мёртворождённые»" width="1200" height="1200">
+      <div class="cover-tag">30.08.2024 · 8:02</div>
+    </div>
+
+    <div class="album-info reveal">
+      <div class="album-meta-row">
+        <span class="badge">АЛЬБОМ</span>
+        <span class="year">2024</span>
+        <span class="year">· 8 ТРЕКОВ</span>
+        <span class="year">· 8 МИН 02 СЕК</span>
+      </div>
+
+      <h1>Мёртворождённые</h1>
+
+      <p class="album-desc">
+        Восемь треков, записанных там, где не принято записывать.
+        <em>Грязь, бетон и цветы</em>, пробивающиеся сквозь него.
+        Альбом вышел <em>30 августа 2024</em> — без пресс-волны и согласований.
+      </p>
+
+      <div class="album-actions">
+        <button class="btn" id="playAll">▶ СЛУШАТЬ <span>→</span></button>
+        <a href="index.html#contact" class="btn-ghost">БУКИНГ И ФИТЫ</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= ТРЕКЛИСТ ================= -->
+<section class="tracklist-section" aria-labelledby="tlTitle">
+  <div class="wrap" style="padding-top:74px;padding-bottom:86px;">
+    <div class="section-head">
+      <div class="section-label">ТРЕКЛИСТ</div>
+      <h2 class="section-title" id="tlTitle">8 треков</h2>
+    </div>
+
+    <div class="tracklist" id="tracklist"></div>
+  </div>
+</section>
+
+<!-- ================= ЕЩЁ РЕЛИЗЫ ================= -->
+<section class="wrap" aria-labelledby="moreTitle" style="padding-top:96px;">
+  <div class="section-head">
+    <div class="section-label">ЕЩЁ ЗВУК</div>
+    <h2 class="section-title" id="moreTitle">Слушай<br>дальше</h2>
+  </div>
+  <div class="more reveal">
+    <a href="single.html?t=perezvon"><span>2026 · СИНГЛ</span><strong>Перезвон</strong></a>
+    <a href="single.html?t=mama-papa"><span>2026 · СИНГЛ</span><strong>МАМА ПАПА</strong></a>
+    <a href="index.html#releases"><span>КАТАЛОГ</span><strong>Все релизы</strong></a>
+    <a href="index.html#tour"><span>2025 · ТУР</span><strong>Даты тура</strong></a>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= ФУТЕР ================= -->
+<footer class="footer">
+  <span>© <span id="year"></span> MC ЕЗДИТЬ</span>
+  <span>СДЕЛАНО С ЛЮБОВЬЮ К ЗВУКУ</span>
+  <a href="index.html">НА ГЛАВНУЮ ↑</a>
+</footer>
+
+<!-- ================= ПЛЕЕР ================= -->
+<div class="player" id="player" role="region" aria-label="Аудиоплеер">
+  <img class="player-cover" id="playerCover" src="assets/img/mertvorozhdennye.jpg" alt="" width="46" height="46">
+  <button class="p-btn" id="prevBtn" aria-label="Предыдущий трек">◀◀</button>
+  <button class="p-btn main" id="toggleBtn" aria-label="Воспроизвести">▶</button>
+  <button class="p-btn" id="nextBtn" aria-label="Следующий трек">▶▶</button>
+  <div class="player-info">
+    <div class="player-title" id="playerTitle">—</div>
+    <div class="player-bar" id="playerBar"><div class="player-progress" id="playerProgress"></div></div>
+  </div>
+  <span class="player-time" id="playerTime">0:00 / 0:00</span>
+  <button class="p-close" id="closeBtn" aria-label="Закрыть плеер">✕</button>
+</div>
+
+<script>
+/* =====================================================================
+   ДАННЫЕ. Длительности посчитаны по MP3-кадрам — ничего не грузится
+   заранее, страница статична.
+   ===================================================================== */
+const ALBUM = {
+  cover:'assets/img/mertvorozhdennye.jpg',
+  tracks:[
+    { n:'01', title:'Мёртвый Туолет',                 dur:61, src:'assets/audio/mertvorozhdennye/01-mertvyj-tualet.mp3' },
+    { n:'02', title:'Кто в говнище',                  dur:59, src:'assets/audio/mertvorozhdennye/02-kto-v-govnishche.mp3' },
+    { n:'03', title:'Ленин наш батюшка', feat:'КАЛОМЕНСКАЯ', dur:71, src:'assets/audio/mertvorozhdennye/03-lenin-nash-batyushka.mp3' },
+    { n:'04', title:'Нюхать клей',                    dur:55, src:'assets/audio/mertvorozhdennye/04-nyuhat-klej.mp3' },
+    { n:'05', title:'Отец детей из говна',             dur:53, src:'assets/audio/mertvorozhdennye/05-otec-detej-iz-govna.mp3' },
+    { n:'06', title:'Прогулка по улице',               dur:60, src:'assets/audio/mertvorozhdennye/06-progulka-po-ulice.mp3' },
+    { n:'07', title:'Протухшое яйцо',                  dur:64, src:'assets/audio/mertvorozhdennye/07-protuhshoe-jajco.mp3' },
+    { n:'08', title:'Что делать сегодня',              dur:59, src:'assets/audio/mertvorozhdennye/08-cto-delat-segodnya.mp3' }
+  ]
+};
+
+const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+
+/* ---------- Треклист ---------- */
+document.getElementById('tracklist').innerHTML = ALBUM.tracks.map((t, i) => `
+  <button type="button" class="track" data-i="${i}">
+    <span class="track-num">
+      <span class="num">${t.n}</span>
+      <span class="ico" aria-hidden="true">▶</span>
+    </span>
+    <span class="track-name">
+      <span class="t">${esc(t.title)}</span>
+      ${t.feat ? `<span class="feat">FEAT. ${esc(t.feat)}</span>` : ''}
+    </span>
+    <span class="track-right"><span class="track-dur">${fmt(t.dur)}</span></span>
+    <span class="track-line" aria-hidden="true"></span>
+  </button>`).join('');
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- Плеер ---------- */
+(function initPlayer(){
+  const player    = document.getElementById('player');
+  const pTitle    = document.getElementById('playerTitle');
+  const pBar      = document.getElementById('playerBar');
+  const pProg     = document.getElementById('playerProgress');
+  const pTime     = document.getElementById('playerTime');
+  const toggleBtn = document.getElementById('toggleBtn');
+  const prevBtn   = document.getElementById('prevBtn');
+  const nextBtn   = document.getElementById('nextBtn');
+  const closeBtn  = document.getElementById('closeBtn');
+  const rows      = Array.from(document.querySelectorAll('#tracklist .track'));
+
+  let audio = null;   // создаётся при первом клике
+  let index = -1;
+
+  const paint = () => rows.forEach((el, i) => {
+    const on = i === index && audio && !audio.paused;
+    el.classList.toggle('active', on);
+    el.querySelector('.ico').textContent = on ? '❚❚' : '▶';
+  });
+
+  function ensureAudio() {
+    if (audio) return;
+    audio = new Audio();
+    audio.preload = 'none';
+    audio.addEventListener('play', () => {
+      toggleBtn.textContent = '❚❚';
+      toggleBtn.setAttribute('aria-label', 'Пауза');
+      paint();
+    });
+    audio.addEventListener('pause', () => {
+      toggleBtn.textContent = '▶';
+      toggleBtn.setAttribute('aria-label', 'Воспроизвести');
+      paint();
+    });
+    audio.addEventListener('ended', () => {
+      index < ALBUM.tracks.length - 1 ? play(index + 1) : audio.pause();
+    });
+    audio.addEventListener('timeupdate', () => {
+      const d = ALBUM.tracks[index] ? ALBUM.tracks[index].dur : 0;
+      const cur = audio.currentTime;
+      pProg.style.width = (d ? (cur / d) * 100 : 0) + '%';
+      pTime.textContent = fmt(cur) + ' / ' + fmt(d);
+      const row = rows[index];
+      if (row) row.querySelector('.track-line').style.width = (d ? (cur / d) * 100 : 0) + '%';
+    });
+    audio.addEventListener('error', () => {
+      if (index > -1) pTitle.textContent = 'Файл не найден: ' + ALBUM.tracks[index].title;
+    });
+  }
+
+  function play(i) {
+    if (i < 0 || i >= ALBUM.tracks.length) return;
+    ensureAudio();
+    const t = ALBUM.tracks[i];
+    if (i !== index) {
+      index = i;
+      audio.src = t.src;
+      pTitle.textContent = t.n + ' — ' + t.title;
+      pProg.style.width = '0%';
+      pTime.textContent = '0:00 / ' + fmt(t.dur);
+      rows.forEach(r => { r.querySelector('.track-line').style.width = '0%'; });
+    }
+    player.classList.add('show');
+    audio.play().catch(() => { pTitle.textContent = 'Не удалось загрузить трек'; });
+  }
+
+  function toggle() {
+    if (index === -1) return play(0);
+    audio.paused ? audio.play() : audio.pause();
+  }
+
+  rows.forEach((el, i) => el.addEventListener('click', () => {
+    (i === index && audio && !audio.paused) ? audio.pause() : play(i);
+  }));
+
+  document.getElementById('playAll').addEventListener('click', () => {
+    if (index === 0 && audio && !audio.paused) { audio.pause(); return; }
+    play(0);
+  });
+
+  toggleBtn.addEventListener('click', toggle);
+  prevBtn.addEventListener('click', () => play(index <= 0 ? ALBUM.tracks.length - 1 : index - 1));
+  nextBtn.addEventListener('click', () => play(index >= ALBUM.tracks.length - 1 ? 0 : index + 1));
+  closeBtn.addEventListener('click', () => {
+    if (audio) audio.pause();
+    player.classList.remove('show');
+    index = -1;
+    paint();
+  });
+
+  pBar.addEventListener('click', (e) => {
+    if (!audio) return;
+    const d = ALBUM.tracks[index] ? ALBUM.tracks[index].dur : 0;
+    if (!d) return;
+    const r = pBar.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - r.left) / r.width) * d;
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !e.repeat && index > -1) {
+      const t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      e.preventDefault();
+      toggle();
+    }
+    if (e.altKey && e.code === 'ArrowRight') nextBtn.click();
+    if (e.altKey && e.code === 'ArrowLeft') prevBtn.click();
+  });
+})();
+
+/* ---------- Курсор (как на главной) ---------- */
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduced || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  document.body.classList.add('no-custom-cursor');
+} else {
+  const cursor = document.getElementById('cursor');
+  let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+  let tx = cx, ty = cy;
+  window.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+  (function loop() {
+    cx += (tx - cx) * 0.18;
+    cy += (ty - cy) * 0.18;
+    cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+    requestAnimationFrame(loop);
+  })();
+  const HOT = 'a, button, .track';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(HOT)) cursor.classList.add('big');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(HOT) && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(HOT))) {
+      cursor.classList.remove('big');
+    }
+  });
+}
+
+/* ---------- Навигация ---------- */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+/* ---------- Reveal (только 3 элемента) ---------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
