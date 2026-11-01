@@ -41,8 +41,6 @@ body{
   overscroll-behavior-y:none;
 }
 
-/* Отключаем системный зум шрифта и серую вспышку при тапе.
-   touch-action:manipulation убирает 300ms задержку двойного тапа. */
 a,button,input,label,summary{touch-action:manipulation;}
 a{color:inherit;text-decoration:none;}
 img{display:block;max-width:100%;}
@@ -308,12 +306,9 @@ body.no-custom-cursor .cursor{display:none;}
 @media (max-width:560px){
   .single-actions .btn,.single-actions .btn-ghost{width:100%;justify-content:center;}
   .pb-main{min-width:0;}
-  /* Цель тапа не меньше 44px, полоса прогресса — вся кликабельная */
   .pb-play{width:60px;height:60px;flex:none;}
   .pb-bar{height:36px;}
 }
-/* Тач-экраны: убираем blur под шапкой и все hover-эффекты,
-   которые на телефоне остаются «прилипшими» после тапа. */
 @media (hover:none){
   .nav.scrolled{backdrop-filter:none;-webkit-backdrop-filter:none;background:#0a0a0c;}
   .reveal{transition-duration:.3s;}
@@ -426,6 +421,14 @@ const SINGLES = {
     cover:'assets/img/perezvon.jpg',
     src:'assets/audio/singles/perezvon.mp3',
     desc:'Девять с лишним минут на одной ноте. <em>Колокол</em>, который звонит не по расписанию, а когда само накатит. Записан за один дубль, сведён без правок.'
+  },
+  'lirika': {
+    title:'Лирика Житухи',
+    year:2026,
+    dur:177, // Укажите реальную длительность в секундах!
+    cover:'assets/img/lirika.png',
+    src:'assets/audio/singles/lirika.mp3',
+    desc:'История жизни бедной сосисочки. <em>Первый фит МС ЕЗДИТЬ</em>.'
   },
   'mama-papa': {
     title:'МАМА ПАПА',
